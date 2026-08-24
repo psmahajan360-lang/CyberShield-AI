@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CyberShield AI | Threat Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body>
+
+<div class="app-container">
+
+
+    <!-- =====================================================
+         TOP NAVIGATION
+    ====================================================== -->
+
+    <nav class="top-nav">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🛡️
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    CYBERSHIELD AI
+                </div>
+
+                <div class="brand-subtitle">
+                    THREAT DETECTION PLATFORM
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            SYSTEM ONLINE
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            AI-POWERED SECURITY ANALYSIS
+        </div>
+
+        <h1>
+            Detect <span>Phishing Threats</span><br>
+            Before They Reach You.
+        </h1>
+
+        <p>
+            Analyze suspicious URLs using Machine Learning
+            and rule-based security intelligence.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         URL SCANNER
+    ====================================================== -->
+
+    <section class="scanner-panel">
+
+        <div class="panel-heading">
+
+            <div>
+
+                <span class="section-tag">
+                    THREAT SCANNER
+                </span>
+
+                <h2>
+                    🔍 Scan a Website URL
+                </h2>
+
+            </div>
+
+            <div class="scanner-live">
+                ● LIVE ANALYSIS
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+            <div class="url-input-wrapper">
+
+                <span class="url-icon">
+                    🔗
+                </span>
+
+                <input
+                    type="text"
+                    name="url"
+                    placeholder="https://example.com"
+                    autocomplete="off"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit">
+
+                <span>SCAN URL</span>
+
+                <span class="button-arrow">
+                    →
+                </span>
+
+            </button>
+
+        </form>
+
+
+        <div class="scanner-note">
+            Enter a complete URL starting with
+            <strong>http://</strong> or
+            <strong>https://</strong>
+        </div>
+
+    </section>
+
+
+    {% if result %}
+
+
+    <!-- =====================================================
+         FINAL VERDICT
+    ====================================================== -->
+
+    <section class="verdict-panel">
+
+        <div class="verdict-header">
+
+            <div>
+
+                <span class="section-tag">
+                    THREAT ASSESSMENT
+                </span>
+
+                <h2>
+                    Final Security Verdict
+                </h2>
+
+            </div>
+
+            <div class="scan-complete">
+                ✓ ANALYSIS COMPLETE
+            </div>
+
+        </div>
+
+
+        <div class="verdict-content">
+
+
+            <!-- VERDICT -->
+
+            <div class="verdict-main">
+
+                <div class="verdict-label">
+                    FINAL VERDICT
+                </div>
+
+
+                {% if result.final_verdict == "SAFE" %}
+
+                    <div class="verdict-status safe-status">
+                        <span>●</span>
+                        SAFE
+                    </div>
+
+                    <p>
+                        No significant phishing threat detected.
+                    </p>
+
+
+                {% elif result.final_verdict == "PHISHING" %}
+
+                    <div class="verdict-status phishing-status">
+                        <span>●</span>
+                        PHISHING
+                    </div>
+
+                    <p>
+                        High-risk characteristics detected.
+                    </p>
+
+
+                {% else %}
+
+                    <div class="verdict-status suspicious-status">
+                        <span>●</span>
+                        SUSPICIOUS
+                    </div>
+
+                    <p>
+                        Potentially unsafe characteristics detected.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- RISK SCORE -->
+
+            <div class="risk-score-box">
+
+                <div class="risk-title">
+                    RISK SCORE
+                </div>
+
+                <div class="risk-number">
+                    {{ result.risk_score }}
+                </div>
+
+                <div class="risk-caption">
+                    SECURITY RISK
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         QUICK RESULTS
+    ====================================================== -->
+
+    <section class="quick-grid">
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                🧠
+            </div>
+
+            <div class="quick-label">
+                RULE PREDICTION
+            </div>
+
+            <div class="quick-value">
+                {{ result.prediction }}
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                🤖
+            </div>
+
+            <div class="quick-label">
+                ML PREDICTION
+            </div>
+
+            <div class="quick-value">
+                {{ result.ml_prediction }}
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                📈
+            </div>
+
+            <div class="quick-label">
+                ML PROBABILITY
+            </div>
+
+            <div class="quick-value">
+                {{ result.ml_probability }}%
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                🔐
+            </div>
+
+            <div class="quick-label">
+                PROTOCOL
+            </div>
+
+            <div class="quick-value">
+
+                {{ result.security_analysis.https }}
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         URL INTELLIGENCE
+    ====================================================== -->
+
+    <section class="content-panel">
+
+        <div class="panel-title">
+
+            <span class="section-tag">
+                URL INTELLIGENCE
+            </span>
+
+            <h2>
+                🌐 URL Information
+            </h2>
+
+        </div>
+
+
+        <div class="intel-grid">
+
+
+            <div class="intel-item wide">
+
+                <span class="intel-label">
+                    DOMAIN
+                </span>
+
+                <span class="intel-value domain-value">
+                    {{ result.domain }}
+                </span>
+
+            </div>
+
+
+            <div class="intel-item">
+
+                <span class="intel-label">
+                    URL LENGTH
+                </span>
+
+                <span class="intel-value">
+                    {{ result.url_length }}
+                </span>
+
+            </div>
+
+
+            <div class="intel-item">
+
+                <span class="intel-label">
+                    DOTS
+                </span>
+
+                <span class="intel-value">
+                    {{ result.dot_count }}
+                </span>
+
+            </div>
+
+
+            <div class="intel-item">
+
+                <span class="intel-label">
+                    HYPHENS
+                </span>
+
+                <span class="intel-value">
+                    {{ result.hyphen_count }}
+                </span>
+
+            </div>
+
+
+            <div class="intel-item">
+
+                <span class="intel-label">
+                    DIGITS
+                </span>
+
+                <span class="intel-value">
+                    {{ result.digit_count }}
+                </span>
+
+            </div>
+
+
+            <div class="intel-item">
+
+                <span class="intel-label">
+                    QUESTION MARKS
+                </span>
+
+                <span class="intel-value">
+                    {{ result.question_count }}
+                </span>
+
+            </div>
+
+
+            <div class="intel-item">
+
+                <span class="intel-label">
+                    EQUAL SIGNS
+                </span>
+
+                <span class="intel-value">
+                    {{ result.equal_count }}
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECURITY ANALYSIS
+    ====================================================== -->
+
+    <section class="content-panel">
+
+        <div class="panel-title">
+
+            <span class="section-tag">
+                SECURITY INTELLIGENCE
+            </span>
+
+            <h2>
+                🔐 Security Analysis
+            </h2>
+
+        </div>
+
+
+        <div class="analysis-columns">
+
+
+            <!-- SECURITY CHECKS -->
+
+            <div class="analysis-box">
+
+                <div class="box-heading">
+
+                    <span class="box-icon">
+                        🔐
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Security Checks
+                        </h3>
+
+                        <span>
+                            RULE-BASED ANALYSIS
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="check-list">
+
+
+                    <div class="check-row">
+
+                        <span>
+                            HTTPS
+                        </span>
+
+                        <strong>
+                            {{ result.security_analysis.https }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="check-row">
+
+                        <span>
+                            Domain Status
+                        </span>
+
+                        <strong>
+                            {{ result.security_analysis.domain_status }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="check-row">
+
+                        <span>
+                            IP Address
+                        </span>
+
+                        <strong>
+                            {{ result.security_analysis.ip_address }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="check-row">
+
+                        <span>
+                            Suspicious TLD
+                        </span>
+
+                        <strong>
+                            {{ result.security_analysis.suspicious_tld }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="check-row">
+
+                        <span>
+                            Suspicious Keywords
+                        </span>
+
+                        <strong>
+                            {{ result.security_analysis.suspicious_keywords }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- AI ANALYSIS -->
+
+            <div class="analysis-box">
+
+                <div class="box-heading">
+
+                    <span class="box-icon">
+                        🤖
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            AI Analysis
+                        </h3>
+
+                        <span>
+                            MACHINE LEARNING
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-model">
+
+                    {{ result.ai_analysis.model }}
+
+                </div>
+
+
+                <div class="ai-result">
+
+                    <div>
+
+                        <span>
+                            Prediction
+                        </span>
+
+                        <strong>
+                            {{ result.ai_analysis.prediction }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Confidence
+                        </span>
+
+                        <strong>
+                            {{ result.ai_analysis.confidence }}%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-assessment">
+
+                    {{ result.ai_analysis.assessment }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DETECTED ISSUES
+    ====================================================== -->
+
+    {% if result.issues %}
+
+    <section class="issues-panel">
+
+        <div class="panel-title">
+
+            <span class="section-tag danger-tag">
+                THREAT INDICATORS
+            </span>
+
+            <h2>
+                ⚠️ Detected Issues
+            </h2>
+
+        </div>
+
+
+        <div class="issue-list">
+
+            {% for issue in result.issues %}
+
+            <div class="issue-row">
+
+                <span class="issue-icon">
+                    !
+                </span>
+
+                <span>
+                    {{ issue }}
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         RISK BREAKDOWN
+    ====================================================== -->
+
+    {% if result.risk_breakdown %}
+
+    <section class="content-panel">
+
+        <div class="panel-title">
+
+            <span class="section-tag">
+                RISK INTELLIGENCE
+            </span>
+
+            <h2>
+                📊 Risk Breakdown
+            </h2>
+
+        </div>
+
+
+        <div class="risk-grid">
+
+
+            <div class="risk-item">
+                <span>Protocol Risk</span>
+                <strong>{{ result.risk_breakdown.protocol_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>Domain Risk</span>
+                <strong>{{ result.risk_breakdown.domain_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>TLD Risk</span>
+                <strong>{{ result.risk_breakdown.tld_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>Keyword Risk</span>
+                <strong>{{ result.risk_breakdown.keyword_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>URL Length Risk</span>
+                <strong>{{ result.risk_breakdown.url_length_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>Subdomain Risk</span>
+                <strong>{{ result.risk_breakdown.subdomain_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>Special Character Risk</span>
+                <strong>{{ result.risk_breakdown.special_character_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>Digit Risk</span>
+                <strong>{{ result.risk_breakdown.digit_risk }}</strong>
+            </div>
+
+
+            <div class="risk-item">
+                <span>IP Risk</span>
+                <strong>{{ result.risk_breakdown.ip_risk }}</strong>
+            </div>
+
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         MODEL PERFORMANCE
+    ====================================================== -->
+
+    <section class="performance-panel">
+
+        <div class="panel-title centered">
+
+            <span class="section-tag">
+                MACHINE LEARNING
+            </span>
+
+            <h2>
+                📈 Model Performance
+            </h2>
+
+            <p>
+                TF-IDF + Logistic Regression evaluated on
+                the test dataset.
+            </p>
+
+        </div>
+
+
+        <!-- METRICS -->
+
+        <div class="metrics-grid">
+
+
+            <div class="metric">
+
+                <span class="metric-icon">
+                    🎯
+                </span>
+
+                <span class="metric-label">
+                    ACCURACY
+                </span>
+
+                <strong>
+                    {{ metrics.accuracy }}%
+                </strong>
+
+            </div>
+
+
+            <div class="metric">
+
+                <span class="metric-icon">
+                    🔍
+                </span>
+
+                <span class="metric-label">
+                    PRECISION
+                </span>
+
+                <strong>
+                    {{ metrics.precision }}%
+                </strong>
+
+            </div>
+
+
+            <div class="metric">
+
+                <span class="metric-icon">
+                    📌
+                </span>
+
+                <span class="metric-label">
+                    RECALL
+                </span>
+
+                <strong>
+                    {{ metrics.recall }}%
+                </strong>
+
+            </div>
+
+
+            <div class="metric">
+
+                <span class="metric-icon">
+                    ⭐
+                </span>
+
+                <span class="metric-label">
+                    F1-SCORE
+                </span>
+
+                <strong>
+                    {{ metrics.f1_score }}%
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- PERFORMANCE CHART -->
+
+        <div class="chart-section">
+
+            <div class="chart-heading">
+                📊 Model Performance Chart
+            </div>
+
+            <div class="chart-box">
+
+                <img
+                    src="{{ url_for('static', filename='screenshots/model_performance.png') }}"
+                    alt="CyberShield AI Model Performance"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFUSION MATRIX -->
+
+        <div class="chart-section">
+
+            <div class="chart-heading">
+                🎯 Confusion Matrix
+            </div>
+
+            <div class="chart-box">
+
+                <img
+                    src="{{ url_for('static', filename='screenshots/confusion_matrix.png') }}"
+                    alt="CyberShield AI Confusion Matrix"
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <div class="footer-brand">
+            🛡️ CYBERSHIELD AI
+        </div>
+
+        <p>
+            AI-Powered Phishing URL Detection Platform
+        </p>
+
+        <span>
+            TF-IDF + Logistic Regression • Machine Learning Security
+        </span>
+
+    </footer>
+
+
+</div>
+
+</body>
+
+</html>
